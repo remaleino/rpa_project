@@ -1,4 +1,4 @@
-import  csv, urllib,  os
+import  csv, urllib,  os, requests
 from pathlib import Path
 from RPA.Excel.Files import Files
 
@@ -17,6 +17,41 @@ class CreateExcel():
             l = list(dict_reader)
             data = l
         return data
+
+    # Raymond changes
+    # def download_csv_file(url: str, dest_folder:str, file_name: str):
+    #     if not os.path.exists(dest_folder):
+    #         os.makedirs(dest_folder)
+    #     file_path = os.path.join(dest_folder, file_name)
+    #     r = requests.get(url, stream=True)
+    #     if r.ok:
+    #         with open(file_path, 'wb') as f:
+    #             for chunk in r.iter_content(chunk_size=1024 * 8):
+    #                 if chunk:
+    #                     f.write(chunk)
+    #                     f.flush()
+    #                     os.fsync(f.fileno())
+    #     else:
+    #         print("Download failed")
+
+    # Raymond changes
+    # def csv_to_json_converter(self):
+    #     dest_folder = "reports"
+    #     csv_file_name = "csvReport.csv"
+    #     json_file_name = "jsonReport.json"
+    #     csv_file_path = os.path.join(dest_folder, csv_file_name)
+    #     json_file_path = os.path.join(dest_folder, json_file_name)
+    #     self.download_csv_file(self.url, dest_folder, csv_file_name)
+    #     data = {}
+    #     with open(csv_file_path, 'r') as csvFile:
+    #         dict_reader = csv.DictReader(csvFile)
+    #         l = list(dict_reader)
+    #         data = l
+    #     #Return dictionary
+    #     return(data)
+    #     #TO JSON-file
+    #     #with open(json_file_path, 'w', encoding='utf-8') as jsonf:
+    #     #    jsonf.write(json.dumps(data, indent=4))
 
     def iterate_over_csv_dict(self, data):
         filtered_dict = []

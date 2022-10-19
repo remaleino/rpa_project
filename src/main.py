@@ -2,25 +2,39 @@ import requests, argparse, csv, json, urllib, os, robot.api.logger as logger
 from robot.libraries.BuiltIn import BuiltIn
 #import robot.api.logger as logger
 
-
-
-# Download .csv file
-
-def download_csv_file(url):
-    urllib.request.urlretrieve(url, "file.csv")
-    data = {}
-    with open('file.csv', 'r') as csvFile:
-        dict_reader = csv.DictReader(csvFile)
-        l = list(dict_reader)
-        data = l
-    return (data)
-
+def download_csv_file(url: str, dest_folder:str, file_name: str):
+    if not os.path.exists(dest_folder):
+        os.makedirs(dest_folder)
+    file_path = os.path.join(dest_folder, file_name)
+    r = requests.get(url, stream=True)
+    if r.ok:
+        with open(file_path, 'wb') as f:
+             for chunk in r.iter_content(chunk_size=1024 * 8):
+                if chunk:
+                    f.write(chunk)
+                    f.flush()
+                    os.fsync(f.fileno())
+    else:
+        print("Download failed")
 
 def csv_to_json_converter():
     url = "https://backendforrobot.herokuapp.com/api/schedule"
-    data = download_csv_file(url)
-    print(data)
-
+    dest_folder = "reports"
+    csv_file_name = "csvReport.csv"
+    json_file_name = "jsonReport.json"
+    csv_file_path = os.path.join(dest_folder, csv_file_name)
+    json_file_path = os.path.join(dest_folder, json_file_name)
+    download_csv_file(url, dest_folder, csv_file_name)
+    data = {}
+    with open(csv_file_path, 'r') as csvFile:
+        dict_reader = csv.DictReader(csvFile)
+        l = list(dict_reader)
+        data = l
+    #Return dictionary
+    return(data)
+    #TO JSON-file
+    #with open(json_file_path, 'w', encoding='utf-8') as jsonf:
+    #    jsonf.write(json.dumps(data, indent=4))
 
 # data analyysi
 

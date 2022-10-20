@@ -17,10 +17,13 @@ if __name__ == "__main__":
     url = "https://backendforrobot.herokuapp.com/api/schedule"
     
     create_excel = CreateExcel(url, supervisor)
-    data_dict = create_excel.download_csv_file()
-    filtered_data_dict = create_excel.iterate_over_csv_dict(data_dict)
+    create_excel.download_csv_file()
+    data_from_csv = create_excel.get_data_from_csv()
+    filtered_data_dict = create_excel.iterate_over_csv_dict(data_from_csv)
+    #print(filtered_data_dict)
     create_excel.create_excel_file(filtered_data_dict)
-    
-    #path_to_excel = os.path.join(work_path,  "timesheet.xlsx")
-    #filter_excel(lib, path_to_excel)
+
+    # change workhours cells into integer
+    # 
+    # 
 

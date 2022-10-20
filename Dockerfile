@@ -22,9 +22,11 @@ RUN poetry config virtualenvs.create false \
 
 COPY . /code
 
+
 RUN groupadd -r xyzgroup \
     && useradd -d /code -g xyzgroup -l -r appuser \
     && chown -R appuser:xyzgroup /code
 USER appuser
 
-CMD ["python3", "src/main.py"]
+ENTRYPOINT ["sh", "-c", "python3 src/main.py -start=$START -end=$END -s=$SUPERVISOR"]
+#CMD python3 src/main.py $START $END $SUPERVISOR

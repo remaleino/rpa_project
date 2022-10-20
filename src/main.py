@@ -55,4 +55,6 @@ if __name__ == "__main__":
     if supervisor == None:
         logger.warn("You are missing the supervisor!")
     
-    url = ''
+    print("start=", start_date)
+    print("end=", end_date)
+    print("s=", supervisor)

@@ -6,3 +6,7 @@ services:
     build: .
     volumes:
       - ./reports:/code/report
+    environment:
+      - START
+      - END
+      - SUPERVISOR

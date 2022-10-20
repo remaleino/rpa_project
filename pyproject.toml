@@ -8,6 +8,7 @@ authors = ["Evgenii Smirnov <evgenii.smirnov@eficode.com>"]
 python = "^3.10"
 robotframework = "^5.0.1"
 requests = "^2.28.1"
+rpaframework = "^18.0.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

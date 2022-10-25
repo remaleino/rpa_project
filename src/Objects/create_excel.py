@@ -1,4 +1,4 @@
-import  csv, os, requests
+import  csv, os, requests, collections
 from pathlib import Path
 from RPA.Excel.Files import Files
 
@@ -64,6 +64,7 @@ class CreateExcel():
         header = ["worktime_duration","date","project_name","task_name","on_call","overtime","invoice_note","first_name","last_name","supervisor","contract_type"]
         row_number = 1
         cell_header = 1
+        projects = []
         for r in header:
             self.lib.set_cell_value(row_number, cell_header, r)
             row = 2
@@ -75,8 +76,37 @@ class CreateExcel():
             cell_header += 1
         self.lib.save_workbook(path_to_excel)
 
-    # def filter_excel(lib :Files, path_to_excel):
-    #     active = lib.set_active_worksheet(path_to_excel)
-    #     print(active)
-    #     table = active.read_worksheet_as_table(path_to_excel)
-    #     print(table)
+    def change_excel(self):
+        counter = collections.Counter()
+        path_to_excel = os.path.join(self.reports_folder,  "timesheet.xlsx")
+        try: 
+            self.lib.open_workbook(path_to_excel)
+            table = self.lib.read_worksheet(start=2)
+            sum_of_hours = []
+            for value in table:
+                hours_dict = {}
+                hours_dict[value['C']] = int(value['A'])
+                sum_of_hours.append(hours_dict)
+
+            for d in sum_of_hours:
+                counter.update(d)
+
+            sum_of_hours = dict(counter)
+            r = 1
+            project_col = 3
+            repeats = []
+            for key, val in sum_of_hours.items():
+                while len(repeats) != len(sum_of_hours):
+                    project_name = self.lib.get_cell_value(row=r, column=project_col)
+                    if project_name == key and project_name not in repeats:
+                        self.lib.set_cell_value(row=r, column=12, value=key)
+                        self.lib.set_cell_value(row=r, column=13, value=val)
+                        repeats.append(project_name)
+                        r += 1
+                        break
+                    r += 1
+            self.lib.save_workbook(path_to_excel)
+        finally:
+            table = self.lib.read_worksheet(start=2)
+            print(table)
+            self.lib.close_workbook()

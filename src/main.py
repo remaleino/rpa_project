@@ -13,7 +13,7 @@ if __name__ == "__main__":
     supervisor = (args['supervisor'] or None)
     if supervisor == None:
         logger.error("You are missing the supervisor!")
-
+    supervisor = supervisor.replace("/", " ")
     leikki_url = f"https://backendforrobot.herokuapp.com/api/schedule{start_date}{end_date}"
     print(leikki_url)
 

@@ -5,7 +5,7 @@ services:
     image: rpa_app
     build: .
     volumes:
-      - ./reports:/code/report
+      - ./reports:/code/reports
     environment:
       - START
       - END
